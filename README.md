@@ -1,6 +1,9 @@
-**Real-Time Spatiotemporal Tracking of Infectious Outbreaks in Confined Environments with a Host-Pathogen Agent-Based System**  
-Suhas Srinivasan, Jeffrey King, Andres Colubri, Dmitry Korkin  
-bioRxiv 2024.10.01.616085; doi: https://doi.org/10.1101/2024.10.01.616085
+**Suggested Citation**
+
+Srinivasan S, King J, Collins JM, Colubri A, Korkin D.  
+Real-time spatiotemporal tracking of infectious outbreaks in confined environments with a host–pathogen agent-based system.  
+Proceedings of the National Academy of Sciences. 2026 Jan 27;123(4):e2422574123.  
+https://doi.org/10.1073/pnas.2422574123
 
 #
 This repository contains source code, GIS files and libraries for the Infection Dynamics project, with the primary modeled outbreak of Norwalk Virus on Cruise Ship X.
