@@ -13,8 +13,8 @@ returns Results, Methods and tables, including for paywalled articles — query
 construction, filter behaviour, result handling, and recording which section of
 the paper a number was read from.
 
-This skill is the other half: what needs sourcing in [Cruise Ship X and the compartmental models], and what a hit is
-allowed to become here.
+This skill is the other half: what needs sourcing in Cruise Ship X and the
+compartmental models, and what a hit is allowed to become here.
 
 ## This repo already does provenance well — match it
 
@@ -58,7 +58,8 @@ distributions) and are the obvious first candidates to upgrade.
 
 ## Query construction
 
-- Good: `Norwalk virus shedding RT-PCR genome copies per gram stool duration challenge` (also: `norovirus human challenge dose response hypergeometric`)
+- Good: `Norwalk virus shedding RT-PCR genome copies per gram stool duration challenge`
+- Weak: `how long do people shed norovirus`
 
 Quantities this repo needs sourced, and the words that find them:
 
@@ -77,15 +78,15 @@ Quantities this repo needs sourced, and the words that find them:
 
 ## Filter discipline
 
+Filters that are specifically wrong for this repo's literature:
+
 - `human=true` will discard the surrogate-virus and in-vitro literature — murine
   norovirus, feline calicivirus, MS2 — which is where the persistence and
   fomite-transfer measurements live. Do not set it when sourcing an
   environmental constant.
-
 - `medical_mode=true` restricts to a curated medical subset. Reasonable for
   clinical natural history; wrong for environmental microbiology, surface
   transfer, or movement/behaviour parameters.
-
 - Do **not** set `year_min`. The Norwalk challenge studies and the canonical
   dose-response fits this model depends on are decades old and unsuperseded.
 
@@ -112,3 +113,6 @@ explicit about which you are sourcing:
 Do not screen candidate papers by which value reproduces an observed attack
 rate, a VSP-reported outbreak size, or a compartmental fit. That converts a
 validation into a restatement of the search.
+
+If a sourced constant moves the simulated outbreak away from the observed
+one, that is a result: report it, and do not modify tests to make it go away.
