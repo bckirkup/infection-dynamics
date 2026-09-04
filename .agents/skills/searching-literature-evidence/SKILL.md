@@ -1,21 +1,20 @@
 ---
 name: searching-literature-evidence
-description: Search the peer-reviewed literature with the Consensus MCP server to source a norovirus parameter for the Cruise Ship X agent-based model or the compartmental models — dose-response coefficients, shedding curves, incubation and infectious duration, susceptibility, fomite transfer, touch frequency — including query construction, filter discipline, and how a hit becomes a Javadoc or R comment citation with an evidence grade. Use whenever an epidemiological constant needs a citation, or when asked what the literature says about a mechanism.
+description: Search the peer-reviewed literature with the Consensus MCP server to source a norovirus parameter for the Cruise Ship X agent-based model or the compartmental models — dose-response coefficients, shedding curves, incubation and infectious duration, susceptibility, fomite transfer, touch frequency — including how a hit becomes a Javadoc or R comment citation with an evidence grade. Use whenever an epidemiological constant needs a citation, or when asked what the literature says about a mechanism. Pairs with the org-level consensus-literature-retrieval skill, which owns retrieval mechanics.
 ---
 
 # Searching the Literature (Consensus MCP)
 
-The `consensus` MCP server has one tool, `search`, over ~220M papers
-(Semantic Scholar, PubMed, Scopus, ArXiv). It returns title, authors, year,
-journal, citation count, DOI, a Consensus URL, and the abstract.
+## Retrieval mechanics are in the org-level skill
 
-```
-mcp_tool(command="call_tool", server="consensus", tool_name="search",
-         tool_args='{"query": "norovirus human challenge dose response hypergeometric"}')
-```
+Load `consensus-literature-retrieval` (`~/.agents/skills/`) before searching. It
+owns the tool surface, `include_full_text_chunks: true` — which is mandatory and
+returns Results, Methods and tables, including for paywalled articles — query
+construction, filter behaviour, result handling, and recording which section of
+the paper a number was read from.
 
-Run `mcp_tool(command="list_tools", server="consensus")` for the current
-parameter list before using an unfamiliar filter.
+This skill is the other half: what needs sourcing in Cruise Ship X and the
+compartmental models, and what a hit is allowed to become here.
 
 ## This repo already does provenance well — match it
 
@@ -59,8 +58,6 @@ distributions) and are the obvious first candidates to upgrade.
 
 ## Query construction
 
-Query in the vocabulary of the paper you want, not the question you have:
-
 - Good: `Norwalk virus shedding RT-PCR genome copies per gram stool duration challenge`
 - Weak: `how long do people shed norovirus`
 
@@ -79,11 +76,9 @@ Quantities this repo needs sourced, and the words that find them:
 - Setting — `cruise ship outbreak`, `attack rate`, `case ascertainment`,
   `isolation compliance`, `secondary attack rate household`.
 
-Search for the mechanism, then separately for the number.
-
 ## Filter discipline
 
-Default to **no filters**; every filter silently removes evidence.
+Filters that are specifically wrong for this repo's literature:
 
 - `human=true` will discard the surrogate-virus and in-vitro literature — murine
   norovirus, feline calicivirus, MS2 — which is where the persistence and
@@ -94,26 +89,6 @@ Default to **no filters**; every filter silently removes evidence.
   transfer, or movement/behaviour parameters.
 - Do **not** set `year_min`. The Norwalk challenge studies and the canonical
   dose-response fits this model depends on are decades old and unsuperseded.
-- `sjr_max=1` gives Q1 only; never reach for `sjr_min`, which *excludes* the top
-  tiers.
-
-Filters reorder as well as remove. Re-run a promising query without filters
-before calling any value *the* measurement.
-
-## Result handling
-
-- Default page returns 20 papers; `page_size` narrows it (5 works). `page=1`
-  returns a genuinely different set on this organisation's plan, so paginate
-  when the first page is all reviews.
-- Twenty abstracts overflow the tool result. The output is truncated and the
-  full text written to a file named in the truncation notice — **read that
-  file**. Items 15-20 are frequently the measurement papers, because reviews
-  rank higher.
-- Maximum-likelihood coefficients and shedding curves live in tables and
-  figures, exactly as the existing citations record. Open the DOI; do not lift a
-  headline number from an abstract.
-- Consensus asks for numbered inline citations with hyperlinked titles and the
-  exact URLs it returned. Preserve the DOI when it gives one.
 
 ## Check the assay before reusing a number
 
@@ -137,8 +112,7 @@ explicit about which you are sourcing:
 
 Do not screen candidate papers by which value reproduces an observed attack
 rate, a VSP-reported outbreak size, or a compartmental fit. That converts a
-validation into a restatement of the search. Fix the query and the filters from
-the definition of the quantity first. If several papers measure it, take a stated
-central value or the midpoint of the range and say which — not the end that
-helps. If a sourced constant moves the simulated outbreak away from the observed
+validation into a restatement of the search.
+
+If a sourced constant moves the simulated outbreak away from the observed
 one, that is a result: report it, and do not modify tests to make it go away.
